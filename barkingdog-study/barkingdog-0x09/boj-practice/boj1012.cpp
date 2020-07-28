@@ -15,10 +15,12 @@ int main() {
 		for(int i = 0; i < n; i++) fill(board[i], board[i]+m, 0);
 		for(int i = 0; i < n; i++) fill(vis[i], vis[i]+m, 0);
 		
+		
+		
 		for(int i = 0; i < k; i++) {
 			int x, y;
 			cin >> x >> y;
-			board[x][y] = 1;
+			board[y][x] = 1;
 		}
 		
 		for(int i = 0; i < n; i++) {
@@ -28,27 +30,32 @@ int main() {
 			cout << '\n';
 		}
 		
+		cout << '\n';
+		
+		int cnt = 0;
 		for(int i = 0; i < n; i++) {
 			for(int j = 0; j < m; j++) {
-				if(board[i][j] == 0 || vis[i][j]) continue;
-				cout << "(i : " << i << ", j : " << j << ")" << '\n';
-				vis[i][j] = true;
-				queue<pair<int, int> > Q;
-				
-				Q.push({i, j});
-				while(!Q.empty()) {
-					auto cur = Q.front(); Q.pop();
+				queue<pair<int, int> > q;
+				if(board[i][j] != 1 || vis[i][j]) continue;
+				cnt++;
+				cout << "i : " << i << " j : " << j << '\n';
+				vis[i][j] = 1;
+				q.push({i, j});
+				while(!q.empty()) {
+					auto cur = q.front(); q.pop();
 					for(int i = 0; i < 4; i++) {
 						int nx = cur.X + dx[i];
-						int ny= cur.Y + dy[i];
+						int ny = cur.Y + dy[i];
 						if(nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
 						if(vis[i][j] || board[i][j] != 1) continue;
-						vis[i][j] = 1;
-						Q.push({i, j});
+						vis[nx][ny] = 1;
+						q.push({nx, ny});
 					}
 				}
 			}
 		}
+		cout << cnt << '\n';	
 	}
+	
 	return 0;
 }
